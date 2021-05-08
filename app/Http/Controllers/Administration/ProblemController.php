@@ -93,7 +93,6 @@ class ProblemController extends Controller
             'message' => "Problem Settings Updated Successfully",
         ]);
     }
-
     public function languages()
     {
 
