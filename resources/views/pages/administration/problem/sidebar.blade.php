@@ -1,31 +1,31 @@
 @php
     $sidebar = [
         'overview' => [
-            'icon'  => 'fas fa-home',
+            'icon'  => 'fa fa-dashboard',
             'name' => 'Overview',
             'url' => route('administration.problem.overview',['slug' => request()->slug]),
             'callback' => ''
         ],
         'preview_problem' => [
-            'icon'  => 'fas fa-home',
+            'icon'  => 'fas fa-eye',
             'name' => 'Preview Problem',
             'url' => route('administration.problem.preview_problem',['slug' => request()->slug]),
             'callback' => ''
         ],
         'statement' => [
-            'icon'  => 'fas fa-home',
+            'icon'  => 'fa fa-pencil',
             'name' => 'Statement',
             'url' => route('administration.problem.statement',['slug' => request()->slug]),
             'callback' => ''
         ], 
         'test_case' => [
-            'icon'  => 'fas fa-home',
+            'icon'  => 'fas fa-th-list',
             'name' => 'Test Case',
             'url' => route('administration.problem.test_case',['slug' => request()->slug]),
             'callback' => ''
         ],
         'checker' => [
-            'icon'  => 'fas fa-home',
+            'icon'  => 'fas fa-list-alt',
             'name' => 'Checker',
             'url' => route('administration.problem.checker',['slug' => request()->slug]),
             'callback' => ''
