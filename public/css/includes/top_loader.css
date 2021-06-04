@@ -19,14 +19,12 @@
         width: 100%
     }
 }
-
 .top-loader {
     height: 2px;
     width: 100%;
     position: fixed;
     z-index: 1200;
 }
-
 .top-loader .bar {
     position: absolute;
     z-index: 100%;
@@ -37,5 +35,17 @@
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
 }
-
 /*end top loader*/
+
+.loader-top-message {
+    left: 50%;
+    position: fixed;
+    margin-top: -24px;
+    z-index: 1200;
+    padding: 7px 12px 7px 12px;
+    font-weight: bold;
+    border: 1px solid #bf7424;
+    font-size: 15px;
+    border-radius: 5px;
+    display: none;
+}

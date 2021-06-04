@@ -58,7 +58,7 @@ class User extends Authenticatable
 
     public function problems()
     {
-        return $this->belongsToMany(Problem::class, 'problem_moderator', 'user_id', 'problem_id')->withPivot(['role', 'is_accepted']);
+        return $this->belongsToMany(Problem::class, 'problem_moderator', 'user_id', 'problem_id')->withPivot(['role', 'is_accepted'])->withTimestamps();
     }
     public function problemTestCase()
     {

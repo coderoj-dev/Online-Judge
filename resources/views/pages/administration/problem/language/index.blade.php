@@ -6,7 +6,7 @@
     @csrf
     <table class="table-custom">
         <tr>
-            <th></th>
+            <th><input type="checkbox" name="" id="allcb"></th>
             <th>Language Name</th>
             <th>Language Short Code</th>
             <th>Time Limit</th>
@@ -51,6 +51,12 @@
         </div>
     </div>
 </form>
+
+<script type="text/javascript">
+    $('#allcb').change(function () {
+        $('tbody tr td input[type="checkbox"]').prop('checked', $(this).prop('checked'));
+    });
+</script>
 
 
 @stop

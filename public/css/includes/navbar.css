@@ -154,3 +154,17 @@ li a:focus {
     right: -8px;
     border-bottom-color: rgba(0, 0, 0, .15);
 }
+.sign-area .btn-sign {
+    padding: 10px 15px 10px 15px;
+    margin-top: 4px;
+    margin-right: 2px;
+    background-color: transparent;
+    border: 2px solid #34495e;
+}
+.btn-sign:hover {
+    color: #ffffff;
+    opacity: 0.8;
+}
+.btn-sign i {
+    font-size: 15px;
+}

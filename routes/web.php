@@ -52,6 +52,19 @@ Route::group(['prefix' => 'administration'], function () {
 
             Route::get('/languages', 'Administration\ProblemController@languages')->name('administration.problem.languages');
             Route::post('/languages/save', 'Administration\ProblemController@saveLanguages')->name('administration.problem.save_languages');
+
+
+            Route::get('/moderators', 'Administration\ProblemController@moderators')->name('administration.problem.moderators');
+            Route::post('/get_moderators_list', 'Administration\Problem\ModeratorController@getModeratorsList')->name('administration.problem.get_moderators_list');
+            Route::post('/add_moderator', 'Administration\Problem\ModeratorController@addModerator')->name('administration.problem.add_moderator');
+            Route::post('/delete_moderator', 'Administration\Problem\ModeratorController@deleteModerator')->name('administration.problem.delete_moderator');
+
+            Route::get('/test_submissions', 'Administration\ProblemController@viewTestSubmission')->name('administration.problem.test_submissions');
+            Route::get('/create_test_submission', 'Administration\ProblemController@viewTestSubmissionEditor')->name('administration.problem.create_test_submission');
+            Route::get('/test_submission/create', 'Administration\ProblemController@viewTestSubmissionEditor')->name('administration.problem.test_submission.create');
+            Route::post('/test_submission/create', 'Submission\SubmissionController@createTestSubmission');
+            Route::get('/test_submissions/{submission_id}', 'Administration\ProblemController@viewTestSubmissionPage')->name('administration.problem.submission.view');
+
         });
     });
     Route::group(['prefix' => 'settings'], function () {

@@ -60,6 +60,12 @@ class Problem extends Model
     {
         return $this->hasMany(ProblemTestCase::class);
     }
+
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class);
+    }
+
     public function languages()
     {
         return $this->belongsToMany(Language::class)->withPivot('time_limit','memory_limit');
@@ -71,6 +77,6 @@ class Problem extends Model
     }
     public function moderator()
     {
-        return $this->belongsToMany(User::class, 'problem_moderator', 'problem_id', 'user_id')->withPivot(['role', 'is_accepted']);
+        return $this->belongsToMany(User::class, 'problem_moderator', 'problem_id', 'user_id')->withPivot(['role', 'is_accepted'])->withTimestamps();
     }
 }

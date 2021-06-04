@@ -10,28 +10,34 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+
+var libDir = [
+	
+];
+
 var libJs = [
-	'resources/lib/jquery/jquery3.4.1.min.js',
-	'resources/lib/bootstrap/js/bootstrap.min.js',
+	'resources/assets/lib/jquery/jquery3.4.1.min.js',
+	'resources/assets/lib/bootstrap/js/bootstrap.min.js',
  ];
 
 var helperJs = [
- 	'resources/js/script.js',
-	'resources/js/helper/button.js',
-	'resources/js/helper/toast.js',
-	'resources/js/helper/url.js',
-	'resources/js/helper/preload.js',
-	'resources/js/helper/div.js',
-	'resources/js/helper/modal.js',
-	'resources/js/helper/form.js',
+ 	'resources/assets/js/script.js',
+	'resources/assets/js/helper/button.js',
+	'resources/assets/js/helper/toast.js',
+	'resources/assets/js/helper/url.js',
+	'resources/assets/js/helper/preload.js',
+	'resources/assets/js/helper/div.js',
+	'resources/assets/js/helper/modal.js',
+	'resources/assets/js/helper/form.js',
 ];
 
 var appJs = [
-	'resources/js/auth/auth.js',
-	'resources/js/problem/problem_dashboard.js',
-	'resources/js/problem/problem_details_editor.js',
-	'resources/js/profile/profile.js',
-	'resources/js/language/language.js',
+	'resources/assets/js/auth/auth.js',
+	'resources/assets/js/problem/problem_dashboard.js',
+	'resources/assets/js/problem/problem_details_editor.js',
+	'resources/assets/js/profile/profile.js',
+	'resources/assets/js/language/language.js',
+	'resources/assets/js/submission/submission_editor.js',
 ];
 
 var scripts = [].concat(libJs,helperJs,appJs);
