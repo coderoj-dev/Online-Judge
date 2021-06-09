@@ -47,6 +47,7 @@ $(document).ready(function() {
             window.open(link, '_blank');
             return;
         }
+        e.preventDefault();
         if (link == "#") return;
         if (!url.checkValidUrl(link)) return;
         if (link.indexOf(document.domain) >= 0) {

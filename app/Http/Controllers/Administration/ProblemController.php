@@ -46,7 +46,7 @@ class ProblemController extends Controller
         // dd(auth()->user()->problems()->where('problem_id',$this->problemData->id)->first()->pivot->role);
         $role = auth()->user()->problems()->where('problem_id',$this->problemData->id)->first();
         $role = $role ? $role->pivot->role : "Not Owner Or Moderator";
-        $moderators = $this->problemData->moderator->sortByDesc('created_at');
+        $moderators = $this->problemData->moderator->sortBy('created_at');
         return view('pages.administration.problem.moderators',[
             'moderators' => $moderators,
             'role' => $role
@@ -137,11 +137,7 @@ class ProblemController extends Controller
 
     public function viewTestSubmission()
     {
-        $submissions = $this->problemData->submissions()->where(['type' => '1'])->get();
-        
-        $current_date_time = Carbon::now()->toDateTimeString();
-
-        echo $current_date_time;
+        $submissions = $this->problemData->submissions()->where(['type' => '1'])->orderBy('id', 'DESC')->get();
 
         return view('pages.administration.problem.test_submission', [
             'problem'     => $this->problemData,

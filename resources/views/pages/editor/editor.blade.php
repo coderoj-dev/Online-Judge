@@ -43,7 +43,6 @@
     }
 </style>
 
-
 <div class="editorArea">
     <div class="editorAreaTop">
         <div class="row">
@@ -81,22 +80,6 @@
        </div>
     </div>
 </div>
-
-
-<form action="{{$submitUrl}}" method="post">
-    @csrf
-    <select class='form-control editorLanguageSelect' name="language_id" onclick='submissionEditor.changeLanguage()'>
-                    
-                @foreach ($languages as $key => $language)
-                    
-                    <option value="{{$language->id}}">{{$language->name}}</option>
-                    
-                @endforeach
-                </select>
-    <br/>
-    <textarea row="15" name="source_code"></textarea><br/>
-    <button type="submit">Submit</button>
-</form>
 
 <script type="text/javascript">
     submissionEditor.setUpEditor("cpp");

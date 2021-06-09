@@ -111,8 +111,14 @@ var problem = {
         var addUrl = el.attr('data-add-url');
         var data = {};
         data['search'] = el.val();
+        if(data['search'] == "")
+        {
+            return;
+        }
         $.post(geturl, app.setToken(data), function (response) {
-            var moderatorsList = JSON.parse(response);            
+            console.log(response);
+            var moderatorsList = JSON.parse(response);    
+            $('#suggestion_box').html("");        
             $.each(moderatorsList, function () {
                 $('#suggestion_box').append(
                     "<li class='list-group-item moderators_suggestion_li' onclick='problem.addProblemModerator($(this))' data-userId='"+ this.id +"' data-url='"+addUrl+"'>" +
@@ -133,21 +139,41 @@ var problem = {
             url.load();
             toast.success("Successfully Add Moderator");
         });
-        
-        // $.post(dashboard_action_url,buildProblemData("addProblemModerator",data),function(response){
-        //     loadModeratorsPage();
-        //     toast.success("Successfully Add Moderator");
-        // });
     },
     deleteProblemModerator : function(el) {
-        var delUrl = el.attr('data-url');
-        var userId = el.attr('data-userId');
-        var data = {
-            'userId': userId,
+        var ok = confirm("Are you want to delete moderator?");
+        if(ok)
+        {
+            var delUrl = el.attr('data-url');
+            var userId = el.attr('data-userId');
+            var data = {
+                'userId': userId,
+            }
+            $.post(delUrl, app.setToken(data), function (response) {
+                url.load();
+                toast.success("Successfully Removed Moderator");
+            });
         }
+        
+    },
+    cancelProblemModerator : function(el) {
+        var delUrl = el.attr('data-url');
+        var data = {}
         $.post(delUrl, app.setToken(data), function (response) {
             url.load();
             toast.success("Successfully Removed Moderator");
+        });
+    },
+    acceptProblemModerator : function (el) {
+        var acceptUrl = el.attr('data-url');
+        var userId = el.attr('data-userId');
+        console.log(userId);
+        var data = {
+            'userId' : userId
+        };
+        $.post(acceptUrl, app.setToken(data), function (response) {
+            url.load();
+            toast.success("Your are now moderator");
         });
     }
 };

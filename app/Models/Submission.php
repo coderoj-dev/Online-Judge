@@ -12,7 +12,7 @@ class Submission extends Model
     use SubmissionType;
 
     protected $fillable = [
-        'problem_id', 'verdict_id', 'language_id', 'user_id', 'type', 'judge_type', 'source_code', 'time_limit', 'memory_limit', 'time', 'memory', 'run_on_test', 'total_test_case', 'total_point', 'passed_point', 'created_at', 'updated_at',
+        'problem_id', 'verdict_id', 'language_id', 'user_id', 'type', 'judge_type', 'judge_status', 'source_code', 'time_limit', 'memory_limit', 'time', 'memory', 'run_on_test', 'total_test_case', 'total_point', 'passed_point', 'created_at', 'updated_at',
     ];
 
     protected $appends = ['type_string'];
@@ -53,17 +53,20 @@ class Submission extends Model
                 'submission_id' => $this->id,
                 'verdict_id'    => 1,
                 'hash_file'     => $testCase->hash_id,
+                'point'         => $testCase->point,
             ]);
         }
 
         $this->total_test_case = count($testCases);
         $this->total_point     = $totalPoint;
         $this->verdict_id      = count($testCases) == 0 ? 3 : 1;
+        $this->judge_status    = "test_case_ready";
         $this->save();
     }
 
-    public function getTypeAttribute(){
-    	return "hamza";
+    public function getTypeAttribute()
+    {
+        return "hamza";
     }
 
     public function testCases()
@@ -85,9 +88,23 @@ class Submission extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function verdict()
     {
         return $this->belongsTo(Verdict::class);
     }
+
+    public function verdictStatus(){
+        return $this->verdict->statusClass([
+            'running_on_test' => true,
+            'total_test_case' => $this->total_test_case,
+            'run_on_test' => $this->run_on_test,
+            'judge_type' => $this->judge_type,
+            'total_point' => $this->total_point,
+            'passed_point' => $this->passed_point
+        ]);
+    }
+
+    
 
 }

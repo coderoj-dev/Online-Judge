@@ -38,6 +38,7 @@ var appJs = [
 	'resources/assets/js/profile/profile.js',
 	'resources/assets/js/language/language.js',
 	'resources/assets/js/submission/submission_editor.js',
+	'resources/assets/js/submission/submission.js',
 ];
 
 var scripts = [].concat(libJs,helperJs,appJs);

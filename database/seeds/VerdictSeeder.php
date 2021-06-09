@@ -74,6 +74,26 @@ class VerdictSeeder extends Seeder
                 'short_name' => 'IE',
                 'name'       => 'Internal Error',
             ],
+            [
+                'id'         => 13,
+                'short_name' => 'PA',
+                'name'       => 'Passed',
+            ],
+            [
+                'id'         => 14,
+                'short_name' => 'PP',
+                'name'       => 'Partial Passed',
+            ],
+            [
+                'id'         => 15,
+                'short_name' => 'FA',
+                'name'       => 'Failed',
+            ],
+            [
+                'id'         => 16,
+                'short_name' => 'SKIP',
+                'name'       => 'Skipped',
+            ],
         ]);
 
     }
