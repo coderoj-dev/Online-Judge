@@ -93,7 +93,7 @@
             <div class="col-md-8">
                 <div style="">
                     <button type="submit" class="btn submit-btn"  style="margin-top: 15px;">
-                    Update Problem Settings</button>
+                    Problem Settings</button>
                 </div>
             </div>
         </div>
