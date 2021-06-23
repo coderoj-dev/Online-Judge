@@ -99,13 +99,13 @@ Route::group(['prefix' => 'administration', 'middleware' => ['Administration']],
             Route::get('/test_submission/create', 'Administration\ProblemController@viewTestSubmissionEditor')->name('administration.problem.test_submission.create');
             Route::post('/test_submission/create', 'Submission\SubmissionController@createTestSubmission');
             Route::get('/test_submissions/{submission_id}', 'Administration\ProblemController@viewTestSubmissionPage')->name('administration.problem.submission.view');
-           Route::get('/settings/', 'Administration\ProblemController@updateSettings')->name('administration.problem.settings');
-           Route::post('/settings/edit/', 'Administration\ProblemController@editSettings')->name('administration.problem.settings.edit');
+            Route::get('/settings/', 'Administration\ProblemController@updateSettings')->name('administration.problem.settings');
+            Route::post('/settings/edit/', 'Administration\ProblemController@editSettings')->name('administration.problem.settings.edit');
 
 
 
         });
-    });
+});
 
     /*
 
@@ -168,6 +168,17 @@ Route::group(['prefix' => 'administration', 'middleware' => ['Administration']],
 
 
         ///City
+
+        Route::group(['prefix' => 'city'], function () {
+            Route::get('/', 'Administration\City\CityController@index')->name('administration.settings.city.index');
+            Route::get('/create', 'Administration\City\CityController@create')->name('administration.settings.city.create');
+            Route::post('/store', 'Administration\City\CityController@store')->name('administration.settings.city.store');
+            Route::group(['prefix' => '{Id}'], function () {
+                Route::get('/edit', 'Administration\City\CityController@edit')->name('administration.settings.city.edit');
+                Route::post('/update', 'Administration\City\CityController@update')->name('administration.settings.city.update');
+                Route::post('/delete', 'Administration\City\CityController@delete')->name('administration.settings.city.delete');
+            });
+        });
 
 
     });

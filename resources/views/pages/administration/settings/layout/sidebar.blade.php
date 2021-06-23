@@ -30,6 +30,12 @@
                 'url' => route('administration.settings.country.index'),
                 'callback' => ''
         ],
+        'city' => [
+                'icon'  => 'fas fa-cog',
+                'name' => 'City',
+                'url' => route('administration.settings.city.index'),
+                'callback' => ''
+        ],
         
     ];
 

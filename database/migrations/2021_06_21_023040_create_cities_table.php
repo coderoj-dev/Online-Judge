@@ -15,9 +15,11 @@ class CreateCitiesTable extends Migration
     {
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('country_id');
             $table->string('time_zone');
+            $table->string('name');
             $table->timestamps();
+
+            $table->foreignId('country_id')->references('id')->on('countries')->onDelete('cascade');
         });
     }
 

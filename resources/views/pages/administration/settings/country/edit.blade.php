@@ -8,7 +8,7 @@
         <div class='col-md-4 label-area'>
             <label> Country Name<font color="red">*</font>:</label>
         </div>
-       <div class="col-md-8">
+        <div class="col-md-8">
             <input type="text" class='form-control-input' name="name" placeholder="Enter Country Code" value="{{ $country->name }}">
         </div>
     </div>
@@ -16,7 +16,7 @@
         <div class='col-md-4 label-area'>
             <label> Country Code<font color="red">*</font>:</label>
         </div>
-       <div class="col-md-8">
+        <div class="col-md-8">
             <input type="text" class='form-control-input' name="code" placeholder="Enter Country Code" value="{{ $country->code }}">
         </div>
     </div>
@@ -24,7 +24,7 @@
         <div class='col-md-4 label-area'>
             <label> Contry Short Name<font color="red">*</font>:</label>
         </div>
-     <div class="col-md-8">
+        <div class="col-md-8">
             <input type="text" class='form-control-input' name="short_name" placeholder="Enter Country Short Name" value="{{ $country->short_name }}">
         </div>
     </div>
@@ -32,7 +32,7 @@
         <div class='col-md-4 label-area'>
             <label> Contry Flag<font color="red">*</font>:</label>
         </div>
-     <div class="col-md-8">
+        <div class="col-md-8">
             <input type="text" class='form-control-input' name="flag" placeholder="Enter Country flag" value="{{ $country->flag }}">
         </div>
     </div>

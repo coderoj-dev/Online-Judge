@@ -9,14 +9,14 @@
             <label> Country Name<font color="red">*</font>:</label>
         </div>
         <div class="col-md-8">
-            <input type="text" class='form-control-input' name="name" placeholder="Enter Checker Name">
+            <input type="text" class='form-control-input' name="name" placeholder="Enter Country Name">
         </div>
     </div>
     <div class='row' style="margin-bottom: 5px;">
         <div class='col-md-4 label-area'>
             <label> Country Code<font color="red">*</font>:</label>
         </div>
-       <div class="col-md-8">
+        <div class="col-md-8">
             <input type="text" class='form-control-input' name="code" placeholder="Enter Country Code">
         </div>
     </div>
@@ -24,7 +24,7 @@
         <div class='col-md-4 label-area'>
             <label> Country Short Name<font color="red">*</font>:</label>
         </div>
-     <div class="col-md-8">
+        <div class="col-md-8">
             <input type="text" class='form-control-input' name="short_name" placeholder="Enter Country Short Name">
         </div>
     </div>
@@ -32,7 +32,7 @@
         <div class='col-md-4 label-area'>
             <label> Country Flag<font color="red">*</font>:</label>
         </div>
-     <div class="col-md-8">
+        <div class="col-md-8">
             <input type="text" class='form-control-input' name="flag" placeholder="Enter Country flag">
         </div>
     </div>
