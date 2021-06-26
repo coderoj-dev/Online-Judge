@@ -54,7 +54,7 @@ class ProblemController extends Controller
 
     public function moderators()
     {
-        $moderators = $this->problemData->moderator->sortBy('created_at');
+        $moderators = $this->problemData->moderator;
         return view('pages.administration.problem.moderators', [
             'moderators' => $moderators,
             'role'       => $this->problemData->authUserRole,
@@ -169,7 +169,6 @@ class ProblemController extends Controller
                 if (request()->verdict != "") {
                     $q->where('name', request()->verdict);
                 }
-
             })
             ->whereHas('language', function ($q) {
                 if (request()->language != "") {
@@ -236,5 +235,4 @@ class ProblemController extends Controller
             'problem' => $this->problemData,
         ]);
     }
-
 }

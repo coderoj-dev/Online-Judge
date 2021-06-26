@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Problem extends Model
 {
-    use HasLanguage,HasStatistics;
+    use HasLanguage, HasStatistics;
     /**
      * The attributes that are mass assignable.
      *
@@ -110,17 +110,18 @@ class Problem extends Model
         return $this->moderator()->firstOrFail();
     }
 
-    public function isUserSolved(){
-        if(!auth()->check())return -1;
-        $submission = $this->submissions()->where(['user_id' => auth()->user()->id,'type' => 2,'verdict_id' => 3])->first();
-        if(!empty($submission))return 1;
-        $submissions = $this->submissions()->where(['user_id' => auth()->user()->id,'type' => 2])->count();
+    public function isUserSolved()
+    {
+        if (!auth()->check()) return -1;
+        $submission = $this->submissions()->where(['user_id' => auth()->user()->id, 'type' => 2, 'verdict_id' => 3])->first();
+        if (!empty($submission)) return 1;
+        $submissions = $this->submissions()->where(['user_id' => auth()->user()->id, 'type' => 2])->count();
         return $submissions == 0 ? -1 : 0;
     }
 
     public function moderator()
     {
-        return $this->belongsToMany(User::class, 'problem_moderator', 'problem_id', 'user_id')->withPivot(['role', 'is_accepted'])->withTimestamps();
+        return $this->belongsToMany(User::class, 'problem_moderator', 'problem_id', 'user_id')->withPivot(['role', 'is_accepted'])->withTimestamps()->orderBy('problem_moderator.created_at');
     }
 
     public function judgeProblem()
