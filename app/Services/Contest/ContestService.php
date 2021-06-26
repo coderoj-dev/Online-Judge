@@ -49,7 +49,7 @@ class ContestService
     {
         $problem = Problem::where(['slug' => $slug])->firstOrFail();
         // return $problem->slug;
-        $contest->problems()->sync($problem->id, ['user_id' => auth()->user()->id]);
+        $contest->problems()->sync([$problem->id => ['user_id' => auth()->user()->id]]);
         return "Problem Added Successfully";
     }
     public function removeProblem(Contest $contest, $problem_id)
