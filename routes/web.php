@@ -59,7 +59,7 @@ Route::group(['prefix' => 'submissions'], function () {
 
 Route::group(['prefix' => 'administration', 'middleware' => ['Administration']], function () {
     Route::get('/', 'Administration\AdministrationController@index')->name('administration');
-  
+
     Route::group(['prefix' => 'filemanager'], function () {
         Route::get('/structure', 'Administration\FileManager\FileManagerController@structure')->name('administration.filemanager.structure');
         Route::get('/loadUploadArea', 'Administration\FileManager\FileManagerController@loadUploadArea')->name('administration.filemanager.uploadArea');
@@ -149,7 +149,7 @@ Route::group(['prefix' => 'administration', 'middleware' => ['Administration']],
 
         });
 
-    });
+});
 
     /*
     Contest Area
@@ -157,7 +157,7 @@ Route::group(['prefix' => 'administration', 'middleware' => ['Administration']],
      */
 
     Route::group(['prefix' => 'contests', 'name' => 'administration.contest.'], function () {
-        Route::get('/', 'Administration\Contest\ContestController@contestList');
+        Route::get('/', 'Administration\Contest\ContestController@contestList')->name('administration.contests');
         Route::get('/create', 'Contest\ContestController@create')->name('administration.contest.create');
         Route::post('/create', 'Contest\ContestController@store');
         Route::group(['prefix' => '{contest_id}'], function () {
@@ -165,7 +165,15 @@ Route::group(['prefix' => 'administration', 'middleware' => ['Administration']],
             Route::get('/overview', 'Administration\Contest\ContestController@overview')->name('administration.contest.overview');
             Route::get('/edit', 'Administration\Contest\ContestController@edit')->name('administration.contest.edit');
             Route::get('/problems', 'Administration\Contest\ContestController@overview')->name('administration.contest.problems');
-            Route::get('/moderators', 'Administration\Contest\ContestController@overview')->name('administration.contest.moderators');
+            //Contest moderators
+            Route::group(['prefix' => 'moderators'], function () {
+                Route::get('/', 'Administration\Contest\ContestController@moderators')->name('administration.contest.moderator.moderators');
+                Route::post('/get_moderators_list', 'Administration\Contest\ContestModeratorController@getModeratorsList')->name('administration.contest.moderator.get_moderators_list');
+                Route::post('/add_moderator', 'Administration\Contest\ContestModeratorController@addModerator')->name('administration.contest.moderator.add_moderator');
+                Route::post('/delete_moderator', 'Administration\Contest\ContestModeratorController@deleteModerator')->name('administration.contest.moderator.delete_moderator');
+                Route::post('/leave_moderator', 'Administration\Contest\ContestModeratorController@leaveModerator')->name('administration.contest.moderator.leave_moderator');
+
+            });
         });
     });
 

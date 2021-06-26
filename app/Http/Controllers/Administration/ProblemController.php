@@ -54,7 +54,7 @@ class ProblemController extends Controller
 
     public function moderators()
     {
-        $moderators = $this->problemData->moderator->sortBy('created_at');
+        $moderators = $this->problemData->moderator->sortBy('created_at');  
         return view('pages.administration.problem.moderators', [
             'moderators' => $moderators,
             'role'       => $this->problemData->authUserRole,

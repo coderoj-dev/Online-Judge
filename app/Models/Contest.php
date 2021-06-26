@@ -64,4 +64,12 @@ class Contest extends Model
     {
         return $this->belongsToMany(Problem::class, 'contest_problem', 'contest_id', 'problem_id')->withPivot(['serial']);
     }
+    public function getAuthUserRoleAttribute()
+    {
+        return $this->moderator()->where('user_id', auth()->user()->id)->firstOrFail()->pivot->role;
+    }
+    public function userRole($userId)
+    {
+        return $this->moderator()->where('user_id', $userId)->firstOrFail()->pivot->role;
+    }
 }

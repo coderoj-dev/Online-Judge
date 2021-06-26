@@ -30,4 +30,15 @@ class ContestController extends Controller
     {
         return view('pages.administration.contest.edit.edit', ['contest' => $this->contest]);
     }
+
+    public function moderators()
+    {
+        $moderators = $this->contest->moderator()->orderBy('created_at')->get();
+     
+        return view('pages.administration.contest.moderator.moderators', [
+            'contest'    => $this->contest,
+            'moderators' => $moderators,
+            'role'       => $this->contest->authUserRole,
+        ]);
+    }
 }
