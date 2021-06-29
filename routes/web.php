@@ -153,10 +153,13 @@ Route::group(['prefix' => 'administration', 'middleware' => ['Administration']],
      */
 
     Route::group(['prefix' => 'contests', 'name' => 'administration.contest.'], function () {
-        Route::get('/', 'Administration\Contest\ContestController@contestList');
+        Route::get('/', 'Administration\Contest\ContestController@contestList')->name('administration.contests');
         Route::get('/create', 'Contest\ContestController@create')->name('administration.contest.create');
         Route::post('/create', 'Contest\ContestController@store');
-        Route::group(['prefix' => '{contest_id}'], function () {
+        Route::post('/{contest_id}/accept_moderator', 'Administration\Contest\ModeratorController@acceptModetator')->name('administration.contest.accept_moderator');
+        Route::post('/{contest_id}/cancel_moderator', 'Administration\Contest\ModeratorController@cancelModeratorRequest')->name('administration.contest.cancel_moderator');
+
+        Route::group(['prefix' => '{contest_id}', 'middleware' => 'ContestModeratorIsPending'], function () {
             Route::get('/', 'Administration\Contest\ContestController@overview');
             Route::get('/overview', 'Administration\Contest\ContestController@overview')->name('administration.contest.overview');
             Route::get('/edit', 'Administration\Contest\ContestController@edit')->name('administration.contest.edit');
@@ -165,13 +168,19 @@ Route::group(['prefix' => 'administration', 'middleware' => ['Administration']],
             Route::get('/problems', 'Administration\Contest\ContestController@problems')->name('administration.contest.problems');
             Route::post('/add_problem', 'Administration\Contest\ContestController@addProblem')->name('administration.contest.add_problem');
             Route::post('/{problem_id}/remove_problem', 'Administration\Contest\ContestController@removeProblem')->name('administration.contest.remove_problem');
-            Route::get('/moderators', 'Administration\Contest\ContestController@overview')->name('administration.contest.moderators');
             Route::get('/participants', 'Administration\Contest\ContestController@participant')->name('administration.contest.participant');
             Route::post('/participants', 'Administration\Contest\ContestController@uploadParticipant');
 
             Route::get('/registrations', 'Administration\Contest\ContestController@registrationList')->name('administration.contest.registrations');
             Route::post('/registrations', 'Administration\Contest\ContestController@participant')->name('administration.contest.registrations');
-            
+
+            Route::group(['prefix' => 'moderators'], function () {
+                Route::get('/', 'Administration\Contest\ContestController@moderators')->name('administration.contest.moderators');
+                Route::post('/get_moderators_list', 'Administration\Contest\ModeratorController@getModeratorsList')->name('administration.contest.moderators.get_moderators_list');
+                Route::post('/add_moderator', 'Administration\Contest\ModeratorController@addModerator')->name('administration.contest.moderators.add_moderator');
+                Route::post('/delete_moderator', 'Administration\Contest\ModeratorController@deleteModerator')->name('administration.contest.moderators.delete_moderator');
+                Route::post('/leave_moderator', 'Administration\Contest\ModeratorController@leaveModerator')->name('administration.contest.moderators.leave_moderator');
+            });
         });
     });
 

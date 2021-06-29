@@ -67,7 +67,7 @@ class ContestController extends Controller
         $tableColumn = [];
         $userDataField = $this->contest->user_data_field;
 
-        $defaultColumn = ['registration_id','handle','name','email','registration_time','temp_user','temp_user_password','is_registration_accepted' ];
+        $defaultColumn = ['registration_id', 'handle', 'name', 'email', 'registration_time', 'temp_user', 'temp_user_password', 'is_registration_accepted'];
 
         foreach ($defaultColumn as $key => $value) {
             array_push($tableColumn, ['data' => $value]);
@@ -130,5 +130,15 @@ class ContestController extends Controller
         ]);
 
         return $response;
+    }
+
+    public function moderators()
+    {
+        $moderators = $this->contest->moderator;
+        // dd($this->contest->authUserRole);
+        return view('pages.administration.contest.moderators', [
+            'moderators' => $moderators,
+            'role' =>  $this->contest->authUserRole
+        ]);
     }
 }

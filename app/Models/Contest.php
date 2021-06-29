@@ -15,7 +15,7 @@ class Contest extends Model
         'start' => 'datetime',
     ];
 
-    protected $appends = ['bannerPath'];
+    protected $appends = ['bannerPath', 'authUserRole'];
 
     protected static function boot()
     {
@@ -59,25 +59,25 @@ class Contest extends Model
 
     public function getUserDataFieldAttribute($userDataField)
     {
-        $defaultField = ['handle','name','email','registration_time','temp_user','temp_user_password','registration_status'];
+        $defaultField = ['handle', 'name', 'email', 'registration_time', 'temp_user', 'temp_user_password', 'registration_status'];
 
-        $userDataField = $userDataField == "" ? [] : json_decode($userDataField,true);
+        $userDataField = $userDataField == "" ? [] : json_decode($userDataField, true);
 
-        if(empty($userDataField)){
+        if (empty($userDataField)) {
             $userDataField['default'] = $defaultField;
             $userDataField['registration'] = [];
         }
 
         foreach ($defaultField as $key => $value) {
             if (($removeKey = array_search($value, $userDataField['registration'])) !== false) {
-                    unset($userDataField['registration'][$removeKey]);
+                unset($userDataField['registration'][$removeKey]);
             }
         }
 
         return $userDataField;
     }
 
-    
+
 
     public function owner()
     {
@@ -89,8 +89,9 @@ class Contest extends Model
         return $this->belongsToMany(Problem::class, 'contest_problem', 'contest_id', 'problem_id')->withPivot(['serial']);
     }
 
-    public function registrations(){
-        return $this->belongsToMany(User::class, 'contest_registration', 'contest_id', 'user_id')->withPivot(['id','registration_data','is_registration_accepted','is_temp_user','temp_user_password'])->withTimestamps();
+    public function registrations()
+    {
+        return $this->belongsToMany(User::class, 'contest_registration', 'contest_id', 'user_id')->withPivot(['id', 'registration_data', 'is_registration_accepted', 'is_temp_user', 'temp_user_password'])->withTimestamps();
     }
 
     public function getBannerPathAttribute()
@@ -101,5 +102,15 @@ class Contest extends Model
     public function getBannerAttribute($banner)
     {
         return asset($this->bannerPath . $banner);
+    }
+
+    public function getAuthUserRoleAttribute()
+    {
+        return $this->moderator()->where('user_id', auth()->user()->id)->firstOrFail()->pivot->role;
+    }
+
+    public function userRole($userId)
+    {
+        return $this->moderator()->where('user_id', $userId)->firstOrFail()->pivot->role;
     }
 }

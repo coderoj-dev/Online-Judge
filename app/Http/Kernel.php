@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'CheckLayoutKey' => \App\Http\Middleware\CheckLayoutKey::class,
         'ModeratorIsPending' => \App\Http\Middleware\Administration\Problem\ModeratorIsPending::class,
+        'ContestModeratorIsPending' => \App\Http\Middleware\Administration\Contest\ContestModeratorIsPending::class,
         'Administration' => \App\Http\Middleware\Administration\Administration::class,
         'Admin' => \App\Http\Middleware\Admin::class,
     ];

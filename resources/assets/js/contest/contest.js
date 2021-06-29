@@ -19,7 +19,7 @@ var Contest = {
             success: {
                 resetForm: false,
                 callback: function (response) {
-                   // url.load();
+                    // url.load();
                     // new Modal().close();
                 }
             }
@@ -45,7 +45,7 @@ var Contest = {
         $.post(addUrl, app.setToken(data), function (response) {
             url.load();
             toast.success(response.message);
-        }).fail(function(error) {
+        }).fail(function (error) {
             toast.danger("Problem Added Error");
         });
         // console.log(problemSlug);
@@ -59,5 +59,79 @@ var Contest = {
             toast.success(response.message);
         });
         // console.log(problemSlug);
+    },
+    getModetatorsList: function (el) {
+        $('#suggestion_box').html("");
+        var geturl = el.attr('data-url');
+        var addUrl = el.attr('data-add-url');
+        var data = {};
+        data['search'] = el.val();
+        if (data['search'] == "") {
+            return;
+        }
+        $.post(geturl, app.setToken(data), function (response) {
+            console.log(response);
+            var moderatorsList = response.moderators;
+            $('#suggestion_box').html("");
+            $.each(moderatorsList, function () {
+                $('#suggestion_box').append("<li class='list-group-item moderators_suggestion_li' onclick='Contest.addContestModerator($(this))' data-userId='" + this.id + "' data-url='" + addUrl + "'>" + "<img class='img-thumbnail moderators_suggestion_li_img' src='" + this.avatar + "' style='width: 50px;'><b> " + this.handle + "</b></li>");
+            });
+        });
+    },
+    addContestModerator: function (el) {
+        var userId = el.attr('data-userId');
+        var addurl = el.attr('data-url');
+        var data = {
+            'userId': userId,
+        }
+        $.post(addurl, app.setToken(data), function (response) {
+            url.load();
+            toast.success(response.message);
+        });
+    },
+    deleteContestModerator: function (el) {
+        var ok = confirm("Are you want to delete moderator?");
+        if (ok) {
+            var delUrl = el.attr('data-url');
+            var userId = el.attr('data-userId');
+            var data = {
+                'userId': userId,
+            }
+            $.post(delUrl, app.setToken(data), function (response) {
+                url.load();
+                toast.success(response.message);
+            });
+        }
+    },
+    acceptProblemModerator: function (el) {
+        var acceptUrl = el.attr('data-url');
+        var userId = el.attr('data-userId');
+        console.log(userId);
+        var data = {
+            'userId': userId
+        };
+        $.post(acceptUrl, app.setToken(data), function (response) {
+            url.load();
+            toast.success(response.message);
+        });
+    },
+    cancelProblemModerator: function (el) {
+        var delUrl = el.attr('data-url');
+        var data = {}
+        $.post(delUrl, app.setToken(data), function (response) {
+            url.load(response.url);
+            toast.success(response.message);
+        });
+    },
+    leaveFromModerator: function (el) {
+        var ok = confirm("Are you want to Leave From moderator?");
+        if (ok) {
+            var delUrl = el.attr('data-url');
+            var data = {};
+            $.post(delUrl, app.setToken(data), function (response) {
+                url.load(response.url);
+                toast.success(response.message);
+            });
+        }
     },
 };
