@@ -161,6 +161,6 @@ class Problem extends Model
 
     public function problemContestAddedBy($contestId)
     {
-        return $this->users()->where('contest_problem.contest_id', $contestId)->get();
+        return $this->users()->where('contest_problem.contest_id', $contestId)->first();
     }
 }

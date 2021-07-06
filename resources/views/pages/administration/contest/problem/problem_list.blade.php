@@ -32,11 +32,7 @@
                 <td>{{ $problem->owner()->handle }}</td>
                 <td>{{ $problem->testCases()->count() }}</td>
                 <td>
-                    {{-- @php
-                        dd($problem->problemContestAddedBy(request()->contest_id));
-                    @endphp --}}
-                    Added By
-
+                    {{ $problem->problemContestAddedBy(request()->contest_id)->handle }}
                 </td>
                 <td>
                     <button class="btn btn-danger" onclick="Contest.removeProblem($(this))"
