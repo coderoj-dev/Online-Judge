@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Problem extends Model
 {
-    use HasLanguage,HasStatistics;
+    use HasLanguage, HasStatistics;
     /**
      * The attributes that are mass assignable.
      *
@@ -100,10 +100,11 @@ class Problem extends Model
         return $problemLanguages;
     }
 
-    public function getLanguage($languageId){
+    public function getLanguage($languageId)
+    {
         $languages = $this->languageList();
         foreach ($languages as $key => $value) {
-            if($value->id == $languageId)return $value;
+            if ($value->id == $languageId) return $value;
         }
         return [];
     }
@@ -118,11 +119,12 @@ class Problem extends Model
         return $this->moderator()->firstOrFail();
     }
 
-    public function isUserSolved(){
-        if(!auth()->check())return -1;
-        $submission = $this->submissions()->where(['user_id' => auth()->user()->id,'type' => 2,'verdict_id' => 3])->first();
-        if(!empty($submission))return 1;
-        $submissions = $this->submissions()->where(['user_id' => auth()->user()->id,'type' => 2])->count();
+    public function isUserSolved()
+    {
+        if (!auth()->check()) return -1;
+        $submission = $this->submissions()->where(['user_id' => auth()->user()->id, 'type' => 2, 'verdict_id' => 3])->first();
+        if (!empty($submission)) return 1;
+        $submissions = $this->submissions()->where(['user_id' => auth()->user()->id, 'type' => 2])->count();
         return $submissions == 0 ? -1 : 0;
     }
 
@@ -150,5 +152,15 @@ class Problem extends Model
     public function userRole($userId)
     {
         return $this->moderator()->where('user_id', $userId)->firstOrFail()->pivot->role;
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'contest_problem');
+    }
+
+    public function problemContestAddedBy($contestId)
+    {
+        return $this->users()->where('contest_problem.contest_id', $contestId)->get();
     }
 }
