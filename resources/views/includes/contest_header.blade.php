@@ -209,7 +209,7 @@
 	<div class="contestTime">
 		@if($contest->status != "past")
 		<div id="timerArea">
-			{{gmdate("H : i : s", $contest->timer())}}
+			{{$contest->timerReadAble()}} 
 		</div>
 		@endif
 	<div id="contestStatusTxt">

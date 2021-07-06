@@ -35,6 +35,7 @@
                         <link href="{{ asset('flag/css/flag-icon.css') }}" rel="stylesheet">
                             @include('includes.head')
                         </link>
+                        
                     </link>
                 </link>
             </meta>

@@ -10,7 +10,7 @@
 			<div class="body" style="min-height: 500px">
 				
 				<div class="pull-right" style="margin-bottom: 10px;">
-					<button class="btn btn-primary" onclick="new Modal('md',500).load('{{route('administration.contest.create')}}','Create contest')">Create Contest</button>
+					<button class="btn btn-primary" onclick="new Modal('custom',600).load('{{route('administration.contest.create')}}','Create contest')">Create Contest</button>
 				</div>
 				<table class="table-custom">
 					<tr>

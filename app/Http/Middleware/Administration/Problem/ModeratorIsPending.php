@@ -17,6 +17,10 @@ class ModeratorIsPending
     public function handle($request, Closure $next)
     {
         $problem  = Problem::where(['slug' => request()->slug])->firstOrFail();
+        if(auth()->check()){
+            if(auth()->user()->type <=20)return $next($request);
+        }
+        
         $problem  = auth()->user()->problems()->where('problem_id', $problem->id)->firstOrFail();
         $isAccept = $problem->pivot->is_accepted;
         if (!$isAccept) {

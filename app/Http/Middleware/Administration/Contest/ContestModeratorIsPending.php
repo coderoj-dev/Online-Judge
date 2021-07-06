@@ -17,6 +17,10 @@ class ContestModeratorIsPending
     public function handle($request, Closure $next)
     {
         $contest  = Contest::where(['id' => request()->contest_id])->firstOrFail();
+        if(auth()->check()){
+            if(auth()->user()->type <=20)return $next($request);
+        }
+        
         $contest  = auth()->user()->contests()->where('contest_id', $contest->id)->firstOrFail();
         $isAccept = $contest->pivot->is_accepted;
         if (!$isAccept) {

@@ -16,7 +16,7 @@ class Contest extends Model
         'start' => 'datetime',
     ];
 
-    protected $appends = ['bannerPath', 'end', 'status','duration_in_hours','authUserRole'];
+    protected $appends = ['bannerPath', 'end', 'status', 'duration_in_hours', 'authUserRole'];
 
     protected static function boot()
     {
@@ -40,6 +40,7 @@ class Contest extends Model
             $slug = $count ? "{$slug}-{$count}" : $slug;
 
             $contest->slug = $slug;
+            $contest->registration_auto_accept = 1;
         });
         // auto-sets values on creation
         static::created(function ($contest) {
@@ -51,6 +52,11 @@ class Contest extends Model
 
         static::deleting(function ($contest) {
         });
+    }
+
+    public function getParticipateMainNameAttribute($name)
+    {
+        return trim($name) == "" ? "@handle@" : $name;
     }
 
     public function moderator()
@@ -106,16 +112,46 @@ class Contest extends Model
     }
     public function getDurationInHoursAttribute()
     {
-        $hours = floor($this->duration / 60);
+        $hours   = floor($this->duration / 60);
         $minutes = $this->duration - floor($this->duration / 60) * 60;
-        if($hours < 10)$hours = $hours;
-        if($minutes < 10)$minutes = "0".$minutes;
-        return $hours.':'.$minutes;
+        if ($hours < 10) {
+            $hours = $hours;
+        }
+
+        if ($minutes < 10) {
+            $minutes = "0" . $minutes;
+        }
+
+        return $hours . ':' . $minutes;
+    }
+
+    public function timerReadAble()
+    {
+        $seconds  = $this->timer();
+        $getHours = floor($seconds / 3600);
+        $getMins  = floor(($seconds - ($getHours * 3600)) / 60);
+        $getSecs  = floor($seconds % 60);
+
+        $getHours = $getHours < 10 ? "0" . $getHours : $getHours;
+        $getMins  = $getMins < 10 ? "0" . $getMins : $getMins;
+        $getSecs  = $getSecs < 10 ? "0" . $getSecs : $getSecs;
+
+        return $getHours . ' : ' . $getMins . ' : ' . $getSecs;
     }
 
     public function owner()
     {
         return $this->moderator()->firstOrFail();
+    }
+
+    public function isModerator()
+    {
+        if (!auth()->check()) {
+            return 0;
+        }
+
+        $ok = $this->moderator()->where(['user_id' => auth()->user()->id, 'is_accepted' => 1])->exists();
+        return $ok;
     }
 
     public function getStatusAttribute()
@@ -147,7 +183,7 @@ class Contest extends Model
 
     public function problems()
     {
-        return $this->belongsToMany(Problem::class, 'contest_problem', 'contest_id', 'problem_id')->withPivot(['serial','user_id'])->orderBy('contest_problem.serial');
+        return $this->belongsToMany(Problem::class, 'contest_problem', 'contest_id', 'problem_id')->withPivot(['serial', 'user_id'])->orderBy('contest_problem.serial');
     }
 
     public function submissions()
@@ -160,10 +196,33 @@ class Contest extends Model
         return $this->belongsToMany(User::class, 'contest_registration', 'contest_id', 'user_id')->withPivot(['registration_data', 'is_registration_accepted', 'is_temp_user', 'temp_user_password'])->withTimestamps();
     }
 
-    public function isParticipant(){
-        if(!auth()->check())return 0;
-        $ok = $this->registrations()->where(['user_id' => auth()->user()->id,'is_registration_accepted' => 1])->exists();
+    public function isParticipant()
+    {
+        if (!auth()->check()) {
+            return 0;
+        }
+
+        $ok = $this->registrations()->where(['user_id' => auth()->user()->id, 'is_registration_accepted' => 1])->exists();
         return $ok;
+    }
+
+    public function canRegistration()
+    {
+        if (!auth()->check()) {
+            return 0;
+        }
+        
+        if ($this->visibility == "private") {
+            return 0;
+        }
+
+        if ($this->status == "past") {
+            return 0;
+        }
+
+        $isRegistered = $this->registrations()->where(['user_id' => auth()->user()->id])->exists();
+
+        return $isRegistered ? 0 : 1;
     }
 
     public function registrationCacheData()
@@ -176,5 +235,4 @@ class Contest extends Model
         return (new \App\Services\Contest\RankList($this));
     }
 
-    
 }

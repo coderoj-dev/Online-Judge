@@ -46,7 +46,7 @@ class ContestService
         $contest->publish                  = isset($data->publish);
         $contest->description              = $data->description;
         $contest->visibility               = $data->visibility;
-        $contest->password                 = $data->password == null ? null : hash('sha256', $data->password);
+        $contest->password                 = $data->password;
         $contest->registration_auto_accept = isset($data->registration_auto_accept);
         $contest->participate_main_name    = $data->participate_main_name;
         $contest->participate_sub_name     = $data->participate_sub_name;

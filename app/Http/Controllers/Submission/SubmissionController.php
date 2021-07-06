@@ -85,8 +85,14 @@ class SubmissionController extends Controller
     public function createContestSubmission(Contest $contest, Problem $problem)
     {
 
-        if($contest->status == "past"){
-            abort(419,'Contest Is Finished');
+        if ($contest->status == "past") {
+            abort(419, 'Contest Is Finished');
+        }
+
+        if (!$contest->isParticipant()) {
+            response()->json([
+                'message'             => 'You can not submit this contest'
+            ],419),
         }
 
         $data = [
@@ -101,7 +107,9 @@ class SubmissionController extends Controller
 
         $contest->submissions()->attach($submission->id);
 
-        if($submission->verdict_id == 3)$contest->rankList()->save();
+        if ($submission->verdict_id == 3) {
+            $contest->rankList()->save();
+        }
 
         return response()->json([
             'message'             => 'Submission Create Success',

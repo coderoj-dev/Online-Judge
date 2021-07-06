@@ -66,6 +66,19 @@ var Contest = {
             }
         });
     },
+    signUp: function(){
+        var form = new Form("contest_sign_up_form");
+        form.submit({
+            loadingText: "Processing...",
+            success: {
+                resetForm: true,
+                callback: function(response) {
+                    url.load(response.url);
+                    new Modal().close();
+                }
+            }
+        });
+    },
     loadFileBanner: function(event) {
         var output = document.getElementById('contestBannerPreview');
         if (!event.target.files[0]) {
@@ -108,7 +121,21 @@ var Contest = {
                 resetForm: true,
                 callback: function(response) {
                     url.load();
-                    //new Modal().close();
+                    new Modal().close();
+                }
+            }
+        });
+    },
+
+    addParticipants: function(e){
+        var form = new Form("add-participants-form");
+        form.submit({
+            loadingText: "Adding...",
+            success: {
+                resetForm: false,
+                callback: function(response) {
+                    new Modal().close();
+                    url.load();
                 }
             }
         });

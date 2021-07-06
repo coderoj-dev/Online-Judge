@@ -6,6 +6,18 @@
 	.table-custom td{
 		padding: 5px;
 	}
+	.ace_body{
+		background-color: #000000;
+	}
+	.ace_cursor { 
+    border-left: 4px solid !important;
+}
+.ace_emphasis {
+    font-style: italic;
+    font-weight: 600;  
+    color: gold !important;
+}
+
 </style>
 	<div style='text-align: right; margin-bottom: 10px;'><button class="btn btn-primary" onclick="new Modal('md').load('{{route('administration.problem.test_case.add',['slug' => request()->slug])}}')"><span class='glyphicon glyphicon-plus'></span> Add Test Case</button></div>
 	<table width='100%' class="table-custom">

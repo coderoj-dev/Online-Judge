@@ -1,6 +1,8 @@
 @extends("pages.administration.contest.contest")
 @section('title', 'Contest Overview')
 @section('contest-sub-content')
+
+
     <style type="text/css">
         .contstFormBlock {
             font-size: 15px;
@@ -42,7 +44,72 @@
             text-align: right;
         }
 
+        .switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  border-radius: 3px;
+  transition: .4s;
+
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 3px;
+  bottom: 4px;
+  border-radius: 3px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
     </style>
+
+
     <div class="form-horizontal">
         <form action="{{ route('administration.contest.update', ['contest_id' => request()->contest_id]) }}"
             id="updateContestForm" method="post" enctype="multipart/form-data">
@@ -117,8 +184,11 @@
                         Contest Publish:
                     </label>
                     <div class="col-sm-9">
-                        <input {{ $contest->publish ? 'checked' : '' }} style="margin-top: 10px;" name="publish"
-                            type="checkbox" value="true">
+                       <label class="switch">
+                            <input type="checkbox" name="publish" {{ $contest->publish ? 'checked' : '' }}>
+                            <span class="slider"></span>
+                        </label>
+
 
                     </div>
                 </div>
@@ -192,12 +262,22 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="control-label col-sm-3">
+                            Contest Password:
+                        </label>
+                        <div class="col-sm-9">
+                            <input value="{{$contest->password}}" class="form-control" style="margin-top: 10px;" name="password" >
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="control-label col-sm-3" for=" Registration Auto Accept ">
                             Registration Auto Accept:
                         </label>
                         <div class="col-sm-9">
-                            <input {{ $contest->registration_auto_accept ? 'checked' : '' }} style="margin-top: 10px;"
-                                name="registration_auto_accept" type="checkbox" value="true">
+                             <label class="switch">
+                                <input type="checkbox" name="registration_auto_accept" {{ $contest->registration_auto_accept ? 'checked' : '' }}>
+                                <span class="slider"></span>
+                                </label>
                         </div>
                     </div>
                 </div>

@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware\Contest\Arena;
 
-use Closure;
 use App\Models\Contest;
+use Closure;
 
 class CheckContestPublish
 {
@@ -16,7 +16,17 @@ class CheckContestPublish
      */
     public function handle($request, Closure $next)
     {
-        $contest = Contest::where(['slug' => request()->contest_slug,'publish' => 1])->firstOrFail();
+        $contest = Contest::where(['slug' => request()->contest_slug])->firstOrFail();
+
+        if(auth()->check()){
+            if(auth()->user()->type <=20)return $next($request);
+        }
+        
+        if (!$contest->isModerator()) {
+            if (!$contest->publish) {
+                abort(404);
+            }
+        }
 
         return $next($request);
     }

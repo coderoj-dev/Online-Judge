@@ -46,13 +46,14 @@ $(document).ready(function() {
 <div class="pull-right" style="margin-bottom: 20px;">
 
 
-    <button class="btn btn-info" url="{{route('administration.contest.registrations.send_mail_view',['contest_id' => request()->contest_id])}}" onclick="Contest.viewMail($(this))">Send Email</button>
+    <button class="btn btn-sm btn-info" url="{{route('administration.contest.registrations.send_mail_view',['contest_id' => request()->contest_id])}}" onclick="Contest.viewMail($(this))">Send Email</button>
 
 
-      <button class="btn btn-success" status="Accepted" url="{{route('administration.contest.registrations.update_registration_status',['contest_id' => request()->contest_id])}}" onclick="Contest.updateParticipantRegistration($(this))"><i class="fa fa-check"></i> Accepted</button>
-      <button class="btn btn-warning" status="Pending" url="{{route('administration.contest.registrations.update_registration_status',['contest_id' => request()->contest_id])}}" onclick="Contest.updateParticipantRegistration($(this))"><i class="fa fa-clock-o"></i> Pending</button>
-      <button class="btn btn-danger" status='Delete' url="{{route('administration.contest.registrations.update_registration_status',['contest_id' => request()->contest_id])}}"  onclick="Contest.updateParticipantRegistration($(this))"><i class="fas fa-trash"></i> Delete</button>
-      <button class="btn btn-primary" onclick="new Modal('md').load('{{route('administration.contest.registrations.create_temp_user',['contest_id' => request()->contest_id])}}','Generate Temp User')">Generate Temp User</button>
+      <button class="btn btn-sm btn-success" status="Accepted" url="{{route('administration.contest.registrations.update_registration_status',['contest_id' => request()->contest_id])}}" onclick="Contest.updateParticipantRegistration($(this))"><i class="fa fa-check"></i> Accepted</button>
+      <button class="btn btn-sm btn-warning" status="Pending" url="{{route('administration.contest.registrations.update_registration_status',['contest_id' => request()->contest_id])}}" onclick="Contest.updateParticipantRegistration($(this))"><i class="fa fa-clock-o"></i> Pending</button>
+      <button class="btn btn-sm btn-danger" status='Delete' url="{{route('administration.contest.registrations.update_registration_status',['contest_id' => request()->contest_id])}}"  onclick="Contest.updateParticipantRegistration($(this))"><i class="fas fa-trash"></i> Delete</button>
+      <button class="btn btn-sm btn-primary" onclick="new Modal('md').load('{{route('administration.contest.registrations.add_participants',['contest_id' => request()->contest_id])}}','Add Participants')">Add Participants</button>
+      <button class="btn btn-sm btn-primary" onclick="new Modal('md').load('{{route('administration.contest.registrations.create_temp_user',['contest_id' => request()->contest_id])}}','Generate Temp User')">Generate Temp User</button>
 
 </div>
 

@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Contest\ContestUpdateRequest;
 use App\Http\Requests\Contest\GenerateContestUserRequest;
 use App\Models\Contest;
-use App\Models\Verdict;
-use App\Models\Submission;
 use App\Models\Language;
+use App\Models\Submission;
 use App\Models\User;
+use App\Models\Verdict;
 use App\Services\Contest\ContestService;
 use App\Services\Notification\NotificationService;
 use Illuminate\Http\Request;
@@ -54,7 +54,7 @@ class ContestController extends Controller
     {
         return view('pages.administration.contest.problem.problem_list', [
             'problems' => $this->contest->problems,
-            'contest' => $this->contest
+            'contest'  => $this->contest,
         ]);
     }
     public function addProblem(Request $request)
@@ -70,14 +70,14 @@ class ContestController extends Controller
         ]);
     }
 
-
     public function moderators()
     {
         $moderators = $this->contest->moderator;
         // dd($this->contest->authUserRole);
         return view('pages.administration.contest.moderators', [
             'moderators' => $moderators,
-            'role' =>  $this->contest->authUserRole
+            'contest'    => $this->contest,
+            'role'       => $this->contest->authUserRole,
         ]);
     }
 
@@ -87,7 +87,7 @@ class ContestController extends Controller
         return view('pages.administration.contest.registration.registration', [
             'tableColumn'     => $tableColumn,
             'tableColumnJson' => json_encode($tableColumn),
-            'contest' => $this->contest
+            'contest'         => $this->contest,
         ]);
     }
 
@@ -120,7 +120,7 @@ class ContestController extends Controller
 
     public function submissionList()
     {
-        $problems = $this->getProblemListWithKeySerial();
+        $problems      = $this->getProblemListWithKeySerial();
         $problemsKeyId = $this->getProblemListWithKeyId();
 
         if (request()->problem != "") {
@@ -136,7 +136,9 @@ class ContestController extends Controller
 
         $userIdList = [];
         foreach ($users as $key => $value) {
-            if ($value->is_registration_accepted) array_push($userIdList, $value->id);
+            if ($value->is_registration_accepted) {
+                array_push($userIdList, $value->id);
+            }
         }
 
         $submissions = $this->contest->submissions()
@@ -165,16 +167,14 @@ class ContestController extends Controller
             })
             ->orderBy('id', 'DESC')->paginate(15);
 
-
-
         return view('pages.administration.contest.submission.submission_list', [
-            'contest'     => $this->contest,
-            'submissions' => $submissions,
-            'problems'    => $this->getProblemListWithKeySerial(),
-            'verdicts'    => Verdict::all(),
+            'contest'       => $this->contest,
+            'submissions'   => $submissions,
+            'problems'      => $this->getProblemListWithKeySerial(),
+            'verdicts'      => Verdict::all(),
             'problemsKeyId' => $problemsKeyId,
-            'users' => $users,
-            'languages'   => Language::orderBy('name', 'asc')->get(),
+            'users'         => $users,
+            'languages'     => Language::orderBy('name', 'asc')->get(),
         ]);
     }
     public function viewSubmission()
@@ -190,7 +190,10 @@ class ContestController extends Controller
 
         $userIdList = [];
         foreach ($users as $key => $value) {
-            if ($value->is_registration_accepted) array_push($userIdList, $value->id);
+
+            if ($value->is_registration_accepted) {
+                array_push($userIdList, $value->id);
+            }
         }
 
         $submission = $this->contest->submissions()
@@ -204,8 +207,8 @@ class ContestController extends Controller
         return view('pages.administration.contest.submission.view_submission', [
             'contest'    => $this->contest,
             'submission' => $submission,
-            'users' => $users,
-            'problemKey' => $problems[$submission->problem_id]['problem_no']
+            'users'      => $users,
+            'problemKey' => $problems[$submission->problem_id]['problem_no'],
         ]);
     }
 
@@ -240,6 +243,62 @@ class ContestController extends Controller
         ]);
 
         return $response;
+    }
+
+    public function viewAddParticipants()
+    {
+        return view('pages.administration.contest.registration.add_participants');
+    }
+
+    public function addParticipants()
+    {
+        $participantsList = request()->participants_list;
+        $participantsList = explode("\n", $participantsList);
+
+        foreach ($participantsList as $key => $value) {
+            $participantsList[$key] = trim($value);
+        }
+
+        $validUsers      = User::whereIn("handle", $participantsList)->get();
+        $errorHandleList = [];
+        $validUsersList  = [];
+
+        foreach ($validUsers as $key => $user) {
+            array_push($validUsersList, $user->handle);
+        }
+        foreach ($participantsList as $key => $value) {
+            if (trim($value) == "") {
+                continue;
+            }
+
+            if (!in_array($value, $validUsersList)) {
+                array_push($errorHandleList, $value);
+            }
+        }
+
+        if (!empty($errorHandleList)) {
+            $handleList = implode("<br/>", $errorHandleList);
+            $cnt        = count($errorHandleList);
+            return response()->json([
+                'message' => "$cnt Handle Are Not Found<br/>$handleList",
+            ], 419);
+        }
+
+        foreach ($validUsers as $key => $user) {
+            if (!$this->contest->registrations()->where(['id' => $user->id])->exists()) {
+                $this->contest->registrations()->attach($user->id, [
+                    'is_registration_accepted' => 1,
+                ]);
+            }
+        }
+
+        $this->contest->registrationCacheData()->save();
+        $this->contest->rankList()->save();
+
+        $cnt = count($validUsersList);
+        return response()->json([
+            'message' => "Successfully Added {$cnt} Participants",
+        ]);
     }
 
     public function updateRegistrationStatus()

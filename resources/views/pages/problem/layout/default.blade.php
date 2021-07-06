@@ -20,7 +20,7 @@
 		font-weight: bold;
 		margin-top: 30px;
 		margin-bottom: 5px;
-		color: #222222;
+		color: #373c42;
 	}
 
 	.th_input_ex {
@@ -54,7 +54,7 @@
 	outline: none;
 }
 .problem{
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	
 }
 
 </style>

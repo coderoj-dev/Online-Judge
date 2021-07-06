@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware\Contest\Arena;
 
-use Closure;
 use App\Models\Contest;
+use Closure;
 
 class CheckContestStart
 {
@@ -16,15 +16,21 @@ class CheckContestStart
      */
     public function handle($request, Closure $next)
     {
-        $contest = Contest::where(['slug' => request()->contest_slug,'publish' => 1])->firstOrFail();
+        $contest = Contest::where(['slug' => request()->contest_slug])->firstOrFail();
 
-        if($contest->status == "upcomming"){
-            return response(view("pages.contest.arena.arena_error",[
-                'contest' => $contest,
-                'error' => "Contest Is Not Start"
-            ]));
+        if(auth()->check()){
+            if(auth()->user()->type <=20)return $next($request);
         }
-        
+
+        if (!$contest->isModerator()) {
+            if ($contest->status == "upcomming") {
+                return response(view("pages.contest.arena.arena_error", [
+                    'contest' => $contest,
+                    'error'   => "",
+                ]));
+            }
+        }
+
         return $next($request);
     }
 }

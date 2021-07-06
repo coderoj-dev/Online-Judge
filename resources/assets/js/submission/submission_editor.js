@@ -2,8 +2,11 @@ var submissionEditor = {
     submissionEditor: "",
     setUpEditor: function(language) {
         this.submissionEditor = ace.edit("sourceCodeEditor");
-        this.submissionEditor.setOption("maxLines", 30);
-        this.submissionEditor.setOption("minLines", 30);
+        this.submissionEditor.setOption("maxLines", 22);
+        this.submissionEditor.setOption("minLines", 22);
+        this.submissionEditor.setOption("fontSize", 14);
+        this.submissionEditor.setShowPrintMargin(false);
+
         this.submissionEditor.setReadOnly(false);
         this.submissionEditor.getSession().setMode("ace/mode/c_cpp");
     },

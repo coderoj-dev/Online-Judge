@@ -87,7 +87,7 @@
 					<tr>
 						<td class="contestInfoTd"><i class="fas fa-hourglass listIcon"></i></td>
 						<td class="contestInfoTd">
-                            <div class="listTitle" id="timerArea">{{gmdate("H : i : s", $contest->timer())}}</div> 
+                            <div class="listTitle" id="timerArea">{{$contest->timerReadAble()}} </div> 
                             <div class="listLabel" id="contestStatusTxt">
                             @if($contest->status == "running")
                             Contest Is Runnning
@@ -159,6 +159,9 @@
 			The contents of this contest, as prepared by its organizer, may not have been reviewed by CoderOJ and does not necessarily represent CoderOJ's views.
 			<hr>
 			<div style="padding-bottom: 5px">
+				@if($contest->canRegistration())
+				<button class="btn btn-primary" onclick="new Modal('md').load('{{route('contests.registration',request()->contest_slug)}}', 'Sign-Up Contest')"><i class="fa fa-sign-in" aria-hidden="true"></i> Sign-Up</button>
+				@endif
 				@if($contest->isParticipant() && $contest->status != "upcomming")
 				<a href="{{route("contest.arena.problems",['contest_slug' => $contest->slug])}}">
 					<button class="btn btn-primary" style="width: 100px;margin-bottom: 3px">Enter Arena</button>
@@ -166,7 +169,7 @@
 				@endif
 				@if($contest->status != "upcomming")
 				<a href="{{route("contest.arena.standings",['contest_slug' => $contest->slug])}}">
-					<button class="btn btn-info" style="width: 100px;margin-bottom: 3px">Standings</button>
+					<button class="btn btn-info" style="width: 100px;margin-bottom: 3px"><i class="fa fa-trophy" aria-hidden="true"></i> Standings</button>
 				</a>
 				@endif
 				<hr>

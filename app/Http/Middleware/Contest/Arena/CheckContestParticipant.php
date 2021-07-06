@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware\Contest\Arena;
 
-use Closure;
 use App\Models\Contest;
+use Closure;
 
 class CheckContestParticipant
 {
@@ -16,13 +16,19 @@ class CheckContestParticipant
      */
     public function handle($request, Closure $next)
     {
-        $contest = Contest::where(['slug' => request()->contest_slug,'publish' => 1])->firstOrFail();
+        $contest = Contest::where(['slug' => request()->contest_slug])->firstOrFail();
 
-        if(!$contest->isParticipant()){
-            return response(view("pages.contest.arena.arena_error",[
-                'contest' => $contest,
-                'error' => "You can not particaipant this contest"
-            ]));
+        if(auth()->check()){
+            if(auth()->user()->type <=20)return $next($request);
+        }
+
+        if (!$contest->isModerator()) {
+            if ($contest->isParticipant() != 1) {
+                return response(view("pages.contest.arena.arena_error", [
+                    'contest' => $contest,
+                    'error'   => "You can not particaipant this contest",
+                ]));
+            }
         }
         return $next($request);
     }
