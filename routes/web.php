@@ -38,15 +38,15 @@ Route::group(['prefix' => 'problems'], function () {
 
 Route::group(['prefix' => 'contests'], function () {
     Route::get('/', 'Contest\ContestController@getContestList')->name('contests');
-
 });
 
-Route::group(['prefix' => 'c/{contest_slug}', 'middleware' => ['CheckContestPublish']], function () {
+Route::group(['prefix' => '/{contest_slug}', 'middleware' => ['CheckContestPublish']], function () {
     Route::get('/', 'Contest\ContestController@contestInfo')->name('contests.info');
     Route::get('/registration', 'Contest\ContestController@viewRegistration')->name('contests.registration');
     Route::post('/registration', 'Contest\ContestController@createRegistration');
 
     Route::group(['prefix' => 'arena', 'middleware' => ['CheckContestParticipant','CheckContestStart']], function () {
+
         Route::get('/', 'Contest\ContestArenaController@problems')->name('contest.arena');
         Route::get('/problems', 'Contest\ContestArenaController@problems')->name('contest.arena.problems');
         Route::get('/problems/{problem_no}', 'Contest\ContestArenaController@viewProblem')->name('contest.arena.problems.view');
@@ -171,7 +171,7 @@ Route::group(['prefix' => 'administration', 'middleware' => ['Administration']],
         Route::post('/{contest_id}/accept_moderator', 'Administration\Contest\ModeratorController@acceptModetator')->name('administration.contest.accept_moderator');
         Route::post('/{contest_id}/cancel_moderator', 'Administration\Contest\ModeratorController@cancelModeratorRequest')->name('administration.contest.cancel_moderator');
 
-        Route::group(['prefix' => '{contest_id}','middleware' => 'ContestModeratorIsPending'], function () {
+        Route::group(['prefix' => '{contest_id}', 'middleware' => 'ContestModeratorIsPending'], function () {
 
             Route::get('/', 'Administration\Contest\ContestController@overview');
             Route::get('/overview', 'Administration\Contest\ContestController@overview')->name('administration.contest.overview');
@@ -179,9 +179,10 @@ Route::group(['prefix' => 'administration', 'middleware' => ['Administration']],
             Route::post('/update', 'Administration\Contest\ContestController@update')->name('administration.contest.update');
 
             Route::get('/problems', 'Administration\Contest\ContestController@problems')->name('administration.contest.problems');
+            Route::get('/{problem}/problem/{sl}', 'Administration\Contest\ContestController@viewProblem')->name('administration.contest.viewProblem');
             Route::post('/add_problem', 'Administration\Contest\ContestController@addProblem')->name('administration.contest.add_problem');
             Route::post('/{problem_id}/remove_problem', 'Administration\Contest\ContestController@removeProblem')->name('administration.contest.remove_problem');
-            
+
 
             Route::get('/submissions', 'Administration\Contest\ContestController@submissionList')->name('administration.contest.submissions');
             Route::get('/submissions/{submission_id}', 'Administration\Contest\ContestController@viewSubmission')->name('administration.contest.submissions.view');

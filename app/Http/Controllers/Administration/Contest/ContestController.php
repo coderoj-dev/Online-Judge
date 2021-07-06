@@ -13,6 +13,7 @@ use App\Models\Verdict;
 use App\Services\Contest\ContestService;
 use App\Services\Notification\NotificationService;
 use Illuminate\Http\Request;
+use App\Models\Problem;
 
 class ContestController extends Controller
 {
@@ -138,7 +139,6 @@ class ContestController extends Controller
             if ($value->is_registration_accepted) {
                 array_push($userIdList, $value->id);
             }
-
         }
 
         $submissions = $this->contest->submissions()
@@ -149,7 +149,6 @@ class ContestController extends Controller
                 if (request()->verdict != "") {
                     $q->where('name', request()->verdict);
                 }
-
             })
             ->whereHas('language', function ($q) {
                 if (request()->language != "") {
@@ -191,10 +190,10 @@ class ContestController extends Controller
 
         $userIdList = [];
         foreach ($users as $key => $value) {
+
             if ($value->is_registration_accepted) {
                 array_push($userIdList, $value->id);
             }
-
         }
 
         $submission = $this->contest->submissions()
@@ -406,5 +405,9 @@ class ContestController extends Controller
             'mailData'    => $mailData,
             'mailType'    => request()->email_type,
         ]);
+    }
+    public function viewProblem($contest_id, Problem $problem, $sl)
+    {
+        return view('pages.administration.contest.problem.problem_view', ['problem' => $problem, 'sl' => $sl]);
     }
 }
